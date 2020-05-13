@@ -155,3 +155,19 @@ function timetable($code, $semester, $occurrence, $year, $start, $end) {
     
     return $classes;
 }
+
+/**
+ * Gets all the metadate for a given courseid
+ * @param int $courseid Course ID
+ * @return array Array of metadata objects.
+ */
+function get_course_metadata($courseid) {
+    $handler = \core_customfield\handler::get_handler('core_course', 'course');
+    $datas = $handler->get_instance_data($courseid);
+    $metadata = [];
+    foreach ($datas as $data) {
+        $metadata[$data->get_field()->get('shortname')] = $data->get_value();
+    }
+    
+    return $metadata;
+}

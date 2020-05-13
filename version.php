@@ -25,12 +25,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2019041604;
+$plugin->version   = 2020051300;
 $plugin->requires  = 2018120300;
 $plugin->component = 'local_placeholders';
-$plugin->release   = '3.6';
+$plugin->release   = '3.8';
 $plugin->maturity  = MATURITY_ALPHA;
 $plugin->dependencies = [
     'filter_shortcodes'  => 2018050800,
-    'local_adminsettingsconfig' => 2018110900
+    'local_adminsettingsconfig' => 2018110900,
+    'local_course_metadata' => 2020043000
 ];

@@ -66,16 +66,13 @@ class shortcodes {
     }
 
     public static function modulelevel($shortcode, $args, $content, $env, $next) {
-        global $COURSE, $DB;
+        global $COURSE;
 
         if (!$COURSE) {
             return '';
         }
-        $level = $DB->get_field('local_course_metadata', 'value', ['courseid' => $COURSE->id, 'name' => 'level']);
-        if (!$level) {
-            return '';
-        }
-        return $level;
+        $metadata = \local_placeholders\get_course_metadata($COURSE->id);
+        return $metadata['level'] ?? '';
     }
 
     public static function coordinators($shortcode, $args, $content, $env, $next) {
@@ -101,20 +98,15 @@ class shortcodes {
 
     public static function timetable($shortcode, $args, $content, $env, $next) {
         global $COURSE, $DB, $OUTPUT;
-
         if (!$COURSE) {
             return '';
         }
-        $records = $DB->get_records('local_course_metadata', ['courseid' => $COURSE->id]);
-        if (!$records) {
-            return 'Nada';
+        $metadata = \local_placeholders\get_course_metadata($COURSE->id);
+        
+        $classes = \local_placeholders\timetable($metadata['modulecode'], $metadata['semester'], $metadata['occurrence'], $metadata['academicyear'], time(), strtotime("+14 days", time()));
+        if (empty($classes->classes)) {
+            return '';
         }
-        $meta = new stdClass();
-        foreach ($records as $record) {
-            $meta->{$record->name} = $record->value;
-        }
-        $classes = \local_placeholders\timetable($meta->modulecode, $meta->semester, $meta->occurrence, $meta->academicyear, time(), strtotime("+14 days", time()));
-        $classes->stuff = "Stuff";
         $timetable = new \local_placeholders\output\timetable($classes);
         return $OUTPUT->render($timetable);
     }

@@ -149,7 +149,14 @@ class shortcodes {
             return;
         }
         $metadata = \local_placeholders\get_course_metadata($COURSE->id);
-        return $metadata[$args['name']] ?? '';
+        if (!$metadata[$args['name']]) {
+            return '';
+        }
+        $value = $metadata[$args['name']];
+        if (strpos($value, 'http') === 0) {
+            $value = html_writer::link($value, ucwords($args['name']));
+        }
+        return $value;
 
     }
 }

@@ -45,7 +45,8 @@ $string['roomdescription'] = 'Find {$a} on the map';
 $string['shortcode:coordinators'] = 'Prints a contact card of all the Module coordinators enrolled on this module.';
 $string['shortcode:coordinators_help'] = 'Module coordinators are automatically enrolled via SITS.
 Please contact Modular if these details are not correct.';
-
+$string['shortcode:coursefield'] = 'Custom course fields';
+$string['shortcode:coursefield_help'] = 'Output any custom course field using [customfield name="fieldname"]';
 $string['shortcode:lecturers'] = 'Prints a contact card of all the Lecturers enrolled on this module.';
 $string['shortcode:lecturers_help'] = 'Lecturers are manually enrolled by Module coordinators.
 Please contact your Module coordinators if these details are not correct.';

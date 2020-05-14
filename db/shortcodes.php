@@ -57,6 +57,10 @@ $shortcodes = [
     'startenddates' => [
         'callback' => 'local_placeholders\local\shortcodes::startenddates',
         'description' => 'shortcode:startenddates'
+    ],
+    'coursefield' => [
+        'callback' => 'local_placeholders\local\shortcodes::coursefield',
+        'description' => 'shortcode:coursefield'
     ]
     
 ];

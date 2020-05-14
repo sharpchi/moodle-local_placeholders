@@ -139,4 +139,17 @@ class shortcodes {
         $link = new moodle_url('/course/edit.php', ['id' => $COURSE->id]);
         return $return . ' ' . html_writer::link($link, get_string('editsettings'));
     }
+
+    public static function coursefield($shortcode, $args, $content, $env, $next) {
+        global $COURSE;
+        if (!$COURSE) {
+            return '';
+        }
+        if (!$args['name']) {
+            return;
+        }
+        $metadata = \local_placeholders\get_course_metadata($COURSE->id);
+        return $metadata[$args['name']] ?? '';
+
+    }
 }

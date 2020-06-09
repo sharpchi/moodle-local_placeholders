@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-    $settings = new local_adminsettingsconfig\admin_settingspage_tabs('local_placeholders', get_string('pluginname', 'local_placeholders'));
+    $settings = new theme_boost_admin_settingspage_tabs('local_placeholders', get_string('pluginname', 'local_placeholders'));
     include('settings/persona.php');
     // include('settings/course.php');
     // include('settings/assignment.php');

@@ -15,26 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Install checks that certain personal profile fields already exist.
- * 
- * @package    local_placeholders
- * @copyright  2019 University of Chichester {@link http://www.chi.ac.uk}
- * @author     Mark Sharp <m.sharp@chi.ac.uk>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   local_placeholders
+ * @author    Mark Sharp <m.sharp@chi.ac.uk>
+ * @copyright 2020 University of Chichester {@link www.chi.ac.uk}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 
 defined('MOODLE_INTERNAL') || die();
-
 require_once($CFG->dirroot . '/local/placeholders/locallib.php');
 
-/**
- * This function is run when the plugin is installed.
- *
- * @return void
- */
-function xmldb_local_placeholders_install() {
-    $fields = ['twitter', 'instagram', 'room', 'linkedin'];
-    foreach ($fields as $field) {
-        \local_placeholders\set_userinfofield($field);
+function xmldb_local_placeholders_upgrade($oldversion) {
+    if ($oldversion < 2020051302) {
+        $fields = ['linkedin'];
+        foreach ($fields as $field) {
+            \local_placeholders\set_userinfofield($field);
+        }
+        upgrade_plugin_savepoint(true, '2020051302', 'local', 'placeholders');
     }
+
+    return true;
 }

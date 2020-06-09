@@ -33,16 +33,6 @@ defined('MOODLE_INTERNAL') || die();
 function set_userinfofield($shortname) {
     global $DB;
     $specific = [
-        'twitter' => [
-            'name' => 'Twitter handle',
-            'description' => 'Your Twitter username e.g. chiuni',
-            'datatype' => 'text',
-            'defaultdata' => '',
-            'param1' => "30",
-            'param2' => "15",
-            'param4' => 'https://twitter.com/$$',
-            'param5' => '_blank'
-        ],
         'instagram' => [
             'name' => 'Instagram handle',
             'description' => 'Your Instagram username e.g. chiuni',
@@ -51,6 +41,16 @@ function set_userinfofield($shortname) {
             'param1' => "30",
             'param2' => "15",
             'param4' => 'https://instagram.com/$$',
+            'param5' => '_blank'
+        ],
+        'linkedin' => [
+            'name' => 'Linkedin',
+            'description' => 'Your Linkedin profile page',
+            'datatype' => 'text',
+            'defaultdata' => '',
+            'param1' => "30",
+            'param2' => "15",
+            'param4' => 'https://linkedin.com/in/$$',
             'param5' => '_blank'
         ],
         'room' => [
@@ -63,6 +63,17 @@ function set_userinfofield($shortname) {
             'param4' => 'https://maps.chi.ac.uk/#room=$$',
             'param5' => '_blank'
         ],
+        'twitter' => [
+            'name' => 'Twitter handle',
+            'description' => 'Your Twitter username e.g. chiuni',
+            'datatype' => 'text',
+            'defaultdata' => '',
+            'param1' => "30",
+            'param2' => "15",
+            'param4' => 'https://twitter.com/$$',
+            'param5' => '_blank'
+        ],
+        
     ];
 
     if (!array_key_exists($shortname, $specific)) {

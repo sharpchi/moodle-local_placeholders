@@ -145,11 +145,11 @@ class shortcodes {
         if (!$COURSE) {
             return '';
         }
-        if (!$args['name']) {
+        if (!isset($args['name'])) {
             return;
         }
         $metadata = \local_placeholders\get_course_metadata($COURSE->id);
-        if (!$metadata[$args['name']]) {
+        if (!isset($metadata[$args['name']])) {
             return '';
         }
         $value = $metadata[$args['name']];

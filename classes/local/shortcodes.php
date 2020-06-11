@@ -96,8 +96,20 @@ class shortcodes {
         return $OUTPUT->render($mcs);
     }
 
+    /**
+     * Prints out a timetable for the given course.
+     *
+     * @param string $shortcode
+     * @param array $args
+     * @param string $content
+     * @param \context $env
+     * @param string $next
+     * @return string Timetable
+     * @todo Needs implementing.
+     */
     public static function timetable($shortcode, $args, $content, $env, $next) {
         global $COURSE, $DB, $OUTPUT;
+        return '';
         if (!$COURSE) {
             return '';
         }

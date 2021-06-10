@@ -15,15 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Placeholders upgrade file.
  * @package   local_placeholders
  * @author    Mark Sharp <m.sharp@chi.ac.uk>
- * @copyright 2020 University of Chichester {@link www.chi.ac.uk}
+ * @copyright 2020 University of Chichester {@link https://www.chi.ac.uk}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
 
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/local/placeholders/locallib.php');
 
+/**
+ * Upgrade function called by Moodle.
+ *
+ * @param int $oldversion Old version of the plugin.
+ * @return bool
+ */
 function xmldb_local_placeholders_upgrade($oldversion) {
     if ($oldversion < 2020051302) {
         $fields = ['linkedin'];

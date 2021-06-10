@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,14 +16,16 @@
 
 /**
  * Shortcodes implementations.
- * 
- * @package    local_chi
- * @copyright  2019 University of Chichester {@link http://www.chi.ac.uk}
+ *
+ * @package    local_placeholders
+ * @copyright  2019 University of Chichester {@link https://www.chi.ac.uk}
  * @author     Mark Sharp <m.sharp@chi.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
 
 namespace local_placeholders\local;
+
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/placeholders/locallib.php');
 
@@ -33,10 +34,21 @@ use html_writer;
 use moodle_url;
 use stdClass;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Class called by the filter_shortcodes plugin.
+ */
 class shortcodes {
 
+    /**
+     * Returns course idnumber if set.
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
     public static function modulecode($shortcode, $args, $content, $env, $next) {
         global $COURSE;
 
@@ -51,6 +63,16 @@ class shortcodes {
         return $COURSE->idnumber;
     }
 
+    /**
+     * Returns course fullname if is a course.
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
     public static function modulename($shortcode, $args, $content, $env, $next) {
         global $COURSE;
 
@@ -65,6 +87,16 @@ class shortcodes {
         return $COURSE->fullname;
     }
 
+    /**
+     * Returns course qualification level if set (e.g. L4,L5).
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
     public static function modulelevel($shortcode, $args, $content, $env, $next) {
         global $COURSE;
 
@@ -75,6 +107,16 @@ class shortcodes {
         return $metadata['level'] ?? '';
     }
 
+    /**
+     * Returns persona cards for each module coordinator on course, if any.
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
     public static function coordinators($shortcode, $args, $content, $env, $next) {
         global $OUTPUT;
         $users = \local_placeholders\get_users_in_course_by_role('coordinator');
@@ -82,6 +124,16 @@ class shortcodes {
         return $OUTPUT->render($mcs);
     }
 
+    /**
+     * Returns persona cards for each module coordinator on course, if any.
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
     public static function librarians($shortcode, $args, $content, $env, $next) {
         global $OUTPUT;
         $users = \local_placeholders\get_users_in_course_by_role('sl');
@@ -89,6 +141,16 @@ class shortcodes {
         return $OUTPUT->render($mcs);
     }
 
+    /**
+     * Returns persona cards for each lecturer on course, if any.
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
     public static function lecturers($shortcode, $args, $content, $env, $next) {
         global $OUTPUT;
         $users = \local_placeholders\get_users_in_course_by_role('lecturer');
@@ -99,23 +161,30 @@ class shortcodes {
     /**
      * Prints out a timetable for the given course.
      *
-     * @param string $shortcode
-     * @param array $args
-     * @param string $content
-     * @param \context $env
-     * @param string $next
-     * @return string Timetable
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
      * @todo Needs implementing.
      */
     public static function timetable($shortcode, $args, $content, $env, $next) {
-        global $COURSE, $DB, $OUTPUT;
+        global $COURSE, $OUTPUT;
         return '';
         if (!$COURSE) {
             return '';
         }
         $metadata = \local_placeholders\get_course_metadata($COURSE->id);
-        
-        $classes = \local_placeholders\timetable($metadata['modulecode'], $metadata['semester'], $metadata['occurrence'], $metadata['academicyear'], time(), strtotime("+14 days", time()));
+
+        $classes = \local_placeholders\timetable(
+            $metadata['modulecode'],
+            $metadata['semester'],
+            $metadata['occurrence'],
+            $metadata['academicyear'],
+            time(),
+            strtotime("+14 days", time())
+        );
         if (empty($classes->classes)) {
             return '';
         }
@@ -123,6 +192,16 @@ class shortcodes {
         return $OUTPUT->render($timetable);
     }
 
+    /**
+     * Prints out the start and end dates of a course, with an edit link if permitted.
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
     public static function startenddates($shortcode, $args, $content, $env, $next) {
         global $COURSE, $USER;
 
@@ -152,6 +231,17 @@ class shortcodes {
         return $return . ' ' . html_writer::link($link, get_string('editsettings'));
     }
 
+    /**
+     * Prints out any course custom field.
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * * name - Shortname of the course custom field. e.g. semester.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
     public static function coursefield($shortcode, $args, $content, $env, $next) {
         global $COURSE;
         if (!$COURSE) {
@@ -169,6 +259,5 @@ class shortcodes {
             $value = html_writer::link($value, ucwords($args['name']));
         }
         return $value;
-
     }
 }

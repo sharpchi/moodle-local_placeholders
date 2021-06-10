@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
+ * Placeholders lib file. Not currently used.
  * @package    local_placeholders
- * @copyright  2019 University of Chichester {@link http://www.chi.ac.uk}
+ * @copyright  2019 University of Chichester {@link https://www.chi.ac.uk}
  * @author     Mark Sharp <m.sharp@chi.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
 
 defined('MOODLE_INTERNAL') || die();

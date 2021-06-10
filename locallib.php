@@ -16,12 +16,12 @@
 
 /**
  * Local functions.
- * 
+ *
  * @package    local_placeholders
- * @copyright  2019 University of Chichester {@link http://www.chi.ac.uk}
+ * @copyright  2019 University of Chichester {@link https://www.chi.ac.uk}
  * @author     Mark Sharp <m.sharp@chi.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
 
 namespace local_placeholders;
 
@@ -30,6 +30,12 @@ use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Called by the installer to set up user profile fields for Moodle.
+ *
+ * @param string $shortname
+ * @return void
+ */
 function set_userinfofield($shortname) {
     global $DB;
     $specific = [
@@ -73,7 +79,6 @@ function set_userinfofield($shortname) {
             'param4' => 'https://twitter.com/$$',
             'param5' => '_blank'
         ],
-        
     ];
 
     if (!array_key_exists($shortname, $specific)) {
@@ -81,12 +86,11 @@ function set_userinfofield($shortname) {
     }
 
     if ($DB->record_exists('user_info_field', ['shortname' => $shortname])) {
-        // error_log("field already exists");
         return;
     }
 
     if (!$cat = $DB->get_record('user_info_category', ['name' => get_string('profiledefaultcategory', 'admin')])) {
-        $sortorder = $DB->get_field_sql('SELECT MAX(`sortorder`) FROM {user_info_category}');
+        $sortorder = $DB->get_field_sql('SELECT MAX(sortorder) FROM {user_info_category}');
         if (is_numeric($sortorder)) {
             $sortorder++;
         } else {
@@ -97,7 +101,8 @@ function set_userinfofield($shortname) {
         $cat->sortorder = $sortorder;
         $cat->id = $DB->insert_record('user_info_category', $cat);
     }
-    $sortorder = $DB->get_field_sql("SELECT MAX(`sortorder`) FROM {user_info_field} WHERE `categoryid` = :categoryid", ['categoryid' => $cat->id]);
+    $sortorder = $DB->get_field_sql("SELECT MAX(sortorder) FROM {user_info_field} WHERE categoryid = :categoryid",
+        ['categoryid' => $cat->id]);
     if (is_numeric($sortorder)) {
         $sortorder++;
     } else {
@@ -114,7 +119,7 @@ function set_userinfofield($shortname) {
             $inst['param5'] = $inst['param5'] ?? '';
             break;
     }
-    
+
     $r = new stdClass();
     $r->shortname = $shortname;
     $r->name = $inst['name'];
@@ -130,21 +135,20 @@ function set_userinfofield($shortname) {
     $r->signup = 0;
     $r->defaultdata = $inst['defaultdata'] ?? '';
     $r->defaultdataformat = 0;
-    $r->param1 = $inst['param1']; // textbox length
-    $r->param2 = $inst['param2']; // max length for field
-    $r->param3 = $inst['param3']; // password?
-    $r->param4 = $inst['param4']; // link Url
-    $r->param5 = $inst['param5']; // link target
-    
+    $r->param1 = $inst['param1']; // Textbox length.
+    $r->param2 = $inst['param2']; // Max length for field.
+    $r->param3 = $inst['param3']; // Password.
+    $r->param4 = $inst['param4']; // Link Url.
+    $r->param5 = $inst['param5']; // Link target.
+
     $DB->insert_record('user_info_field', $r);
-    
 }
 
 /**
  * Given a role shortname, this will fetch users in the current course with that role.
  *
  * @param string $roleshortname
- * @return array List of userIDs
+ * @return array List of userIDs indexed by userid.
  */
 function get_users_in_course_by_role($roleshortname) {
     global $DB, $COURSE;
@@ -158,12 +162,24 @@ function get_users_in_course_by_role($roleshortname) {
     return $users;
 }
 
+/**
+ * Print a timetable for the module.
+ * Not currently used. Here as an idea.
+ *
+ * @param string $code Module code
+ * @param string $semester Semester of the module (S1,S2)
+ * @param string $occurrence A,B,C etc
+ * @param string $year Academic year the module runs
+ * @param int $start Start timestamp the sessions to display - now?
+ * @param int $end End timestamp of the sessions to display now+2weeks.
+ * @return void
+ * @todo Not implemented.
+ */
 function timetable($code, $semester, $occurrence, $year, $start, $end) {
     global $DB;
     $classes = new stdClass();
     $classes->classes = [];
     // This is where to do some API things.
-    
     return $classes;
 }
 
@@ -175,14 +191,12 @@ function timetable($code, $semester, $occurrence, $year, $start, $end) {
 function get_course_metadata($courseid) {
     $handler = \core_customfield\handler::get_handler('core_course', 'course');
     // This is equivalent to the line above.
-    // $handler = \core_course\customfield\course_handler::create();
     $datas = $handler->get_instance_data($courseid);
     $metadata = [];
     foreach ($datas as $data) {
         if (empty($data->get_value())) {
             continue;
         }
-        // $cat = $data->get_field()->get_category()->get('name');
         $metadata[$data->get_field()->get('shortname')] = $data->get_value();
     }
     return $metadata;

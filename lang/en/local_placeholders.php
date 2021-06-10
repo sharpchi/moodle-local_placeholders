@@ -15,12 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * Collection of shortcodes
- * 
+ *
  * @package    local_placeholders
- * @copyright  2019 University of Chichester {@link http://www.chi.ac.uk}
+ * @copyright  2019 University of Chichester {@link https://www.chi.ac.uk}
  * @author     Mark Sharp <m.sharp@chi.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
 
 defined('MOODLE_INTERNAL') || die();
 

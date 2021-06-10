@@ -16,15 +16,17 @@
 
 /**
  * Lists Chi defined shortcodes, depends on filter_shortcodes being present.
- * 
- * @package    local_chi
- * @copyright  2019 University of Chichester {@link http://www.chi.ac.uk}
+ *
+ * @package    local_placeholders
+ * @copyright  2019 University of Chichester {@link https://www.chi.ac.uk}
  * @author     Mark Sharp <m.sharp@chi.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
 
 defined('MOODLE_INTERNAL') || die();
 
+// See filter_shortcodes for full documentation.
+// The key in this array is the name of the shortcode e.g. [modulecode].
 $shortcodes = [
     'modulecode' => [
         'callback' => 'local_placeholders\local\shortcodes::modulecode',
@@ -62,5 +64,4 @@ $shortcodes = [
         'callback' => 'local_placeholders\local\shortcodes::coursefield',
         'description' => 'shortcode:coursefield'
     ]
-    
 ];

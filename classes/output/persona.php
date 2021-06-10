@@ -15,13 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Output class for a persona table.    
- * 
+ * Output class for a persona table.
+ *
  * @package    local_placeholders
- * @copyright  2019 University of Chichester {@link http://www.chi.ac.uk}
+ * @copyright  2019 University of Chichester {@link https://www.chi.ac.uk}
  * @author     Mark Sharp <m.sharp@chi.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
 
 namespace local_placeholders\output;
 
@@ -34,8 +34,16 @@ use templatable;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Personal contact details card
+ */
 class persona implements renderable, templatable {
 
+    /**
+     * List of userids to print contact details of
+     *
+     * @var array
+     */
     protected $people;
 
     /**
@@ -47,6 +55,12 @@ class persona implements renderable, templatable {
         $this->people = $people;
     }
 
+    /**
+     * Export data for the template.
+     *
+     * @param renderer_base $output
+     * @return object|bool
+     */
     public function export_for_template(renderer_base $output) {
         global $DB, $OUTPUT;
         $config = get_config('local_placeholders');
@@ -60,12 +74,12 @@ class persona implements renderable, templatable {
         }
         list($insql, $inparams) = $DB->get_in_or_equal($this->people);
         $users = $DB->get_records_sql("SELECT * FROM {user} WHERE id $insql", $inparams);
-        
+
         list($insql, $inparams) = $DB->get_in_or_equal(['twitter', 'instagram', 'room']);
         $profilefields = $DB->get_records_sql("SELECT * FROM {user_info_field} WHERE shortname $insql", $inparams);
 
         $postcodere = '/[CB][0-9]+\-[0-9]\-[0-9]+/';
-        
+
         foreach ($users as $user) {
             $persona = new stdClass();
             $persona->name = fullname($user);
@@ -81,7 +95,7 @@ class persona implements renderable, templatable {
                 if (!$fieldvalue) {
                     continue;
                 }
-                
+
                 switch ($profilefield->shortname) {
                     case 'twitter':
                     case 'instagram':
@@ -100,24 +114,22 @@ class persona implements renderable, templatable {
                         $room = $fieldvalue;
                         if (preg_match($postcodere, $room) === 1) {
                             $roomurl = new moodle_url('https://maps.chi.ac.uk/', [], 'room=' . $room);
-                            $room = html_writer::link($roomurl, $room, ['title' => get_string('roomdescription', 'local_placeholders', $room)]);
+                            $room = html_writer::link($roomurl, $room,
+                                ['title' => get_string('roomdescription', 'local_placeholders', $room)]);
                         }
                         $persona->room = $room; // Make into map link.
                         break;
                 }
             }
-            if (count($social)>0) {
+            if (count($social) > 0) {
                 // Add a last property to the last item in the social array. This allows for a comma separated list in the template.
                 // It's ugly.
                 $social[count($social) - 1]->last = 1;
                 $persona->social = new stdClass();
                 $persona->social->accounts = $social;
             }
-
             $personas->people[] = $persona;
         }
-
-
         return $personas;
     }
 }

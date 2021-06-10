@@ -16,22 +16,18 @@
 
 /**
  * Placeholder settings
- * 
- * @package    local_placeholder
- * @copyright  2019 University of Chichester {@link http://www.chi.ac.uk}
+ *
+ * @package    local_placeholders
+ * @copyright  2019 University of Chichester {@link https://www.chi.ac.uk}
  * @author     Mark Sharp <m.sharp@chi.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
 
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
     $settings = new theme_boost_admin_settingspage_tabs('local_placeholders', get_string('pluginname', 'local_placeholders'));
     include('settings/persona.php');
-    // include('settings/course.php');
-    // include('settings/assignment.php');
-    // include('settings/partners.php');
-    // include('settings/roleassignment.php');
 
     $ADMIN->add('localplugins', $settings);
 }

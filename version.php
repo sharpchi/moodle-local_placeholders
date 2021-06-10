@@ -16,19 +16,19 @@
 
 /**
  * Version file.
- * 
+ *
  * @package    local_placeholders
- * @copyright  2019 University of Chichester {@link http://www.chi.ac.uk}
+ * @copyright  2019 University of Chichester {@link https://www.chi.ac.uk}
  * @author     Mark Sharp <m.sharp@chi.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020051303;
+$plugin->version   = 2020051304;
 $plugin->requires  = 2018120300;
 $plugin->component = 'local_placeholders';
-$plugin->release   = '3.9';
+$plugin->release   = '3.9.4';
 $plugin->maturity  = MATURITY_ALPHA;
 $plugin->dependencies = [
     'filter_shortcodes'  => 2018050800,

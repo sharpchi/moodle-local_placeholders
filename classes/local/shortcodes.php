@@ -258,6 +258,9 @@ class shortcodes {
         if (strpos($value, 'http') === 0) {
             $value = html_writer::link($value, ucwords($args['name']));
         }
+        if ($args['name'] == 'expiration') {
+            $value = "Expiration date: " . userdate($value);
+        }
         return $value;
     }
 }

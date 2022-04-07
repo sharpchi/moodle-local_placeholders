@@ -63,5 +63,9 @@ $shortcodes = [
     'coursefield' => [
         'callback' => 'local_placeholders\local\shortcodes::coursefield',
         'description' => 'shortcode:coursefield'
+    ],
+    'contactcard' => [
+        'callback' => 'local_placeholders\local\shortcodes::contactcard',
+        'description' => 'shortcode:contactcard'
     ]
 ];

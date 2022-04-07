@@ -40,8 +40,8 @@ function set_userinfofield($shortname) {
     global $DB;
     $specific = [
         'instagram' => [
-            'name' => 'Instagram handle',
-            'description' => 'Your Instagram username e.g. chiuni',
+            'name' => 'Instagram',
+            'description' => 'Your Instagram username e.g. academic1000',
             'datatype' => 'text',
             'defaultdata' => '',
             'param1' => "30",
@@ -59,19 +59,9 @@ function set_userinfofield($shortname) {
             'param4' => 'https://linkedin.com/in/$$',
             'param5' => '_blank'
         ],
-        'room' => [
-            'name' => 'Room',
-            'description' => 'If you have an office, what\'s your postcode e.g. C18-0-06',
-            'datatype' => 'text',
-            'defaultdata' => '',
-            'param1' => "30",
-            'param2' => "10",
-            'param4' => 'https://maps.chi.ac.uk/#room=$$',
-            'param5' => '_blank'
-        ],
         'twitter' => [
-            'name' => 'Twitter handle',
-            'description' => 'Your Twitter username e.g. chiuni',
+            'name' => 'Twitter',
+            'description' => 'Your Twitter username e.g. academic1000',
             'datatype' => 'text',
             'defaultdata' => '',
             'param1' => "30",
@@ -154,12 +144,45 @@ function get_users_in_course_by_role($roleshortname) {
     global $DB, $COURSE;
     $context = context_course::instance($COURSE->id);
     $roleid = $DB->get_field('role', 'id', ['shortname' => $roleshortname]);
+    // Check enrolment or user isn't suspended or inactive.
+    // ue.status = ENROL_USER_ACTIVE.
     $roleassignments = $DB->get_records('role_assignments', ['contextid' => $context->id, 'roleid' => $roleid]);
     $users = [];
+    // A user can have multiple assignments of the same role. We only need one.
     foreach ($roleassignments as $ra) {
         $users[$ra->userid] = $ra->userid;
     }
     return $users;
+}
+
+/**
+ * Returns the default course role names.
+ *
+ * @return array Key/Value pair for a menu.
+ */
+function get_course_roles_menu() {
+    global $DB;
+    $sql = "SELECT r.id, r.name, r.shortname
+              FROM {role} r
+         LEFT JOIN {role_context_levels} rcl ON (rcl.roleid = r.id AND rcl.contextlevel = :contextlevel)
+         LEFT JOIN {role_names} rn ON rn.roleid = r.id
+             WHERE rcl.id IS NOT NULL
+          ORDER BY sortorder DESC";
+    $params = [
+        'contextlevel' => CONTEXT_COURSE
+    ];
+    $roles = $DB->get_records_sql($sql, $params);
+
+    return role_fix_names($roles, null, ROLENAME_ORIGINAL, true);
+}
+
+function get_rolenames_for_ids($roleids) {
+    global $DB;
+    list($insql, $inparams) = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED);
+    $sql = "SELECT r.shortname
+        FROM {role} r
+        WHERE r.id $insql";
+    return $DB->get_records_sql($sql, $inparams);
 }
 
 /**

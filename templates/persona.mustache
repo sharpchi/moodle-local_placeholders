@@ -28,42 +28,66 @@
     Context variables required for this template:
     * items - An array of items
 }}
-
+{{#title}}<h3>{{.}}</h3>{{/title}}
 {{#people}}
 <div class="table-responsive">
     <table class="table table-striped table-sm placeholders_persona">
         <caption>{{name}} {{{photo}}}</caption>
         <tr>
-            <th scope="row">{{#str}}email, local_placeholders{{/str}}</th>
-            <td><a href="mailto:{{email}}" title="Email for {{name}}">{{email}}</a>{{#skype}}, <a href="sip:{{email}}" title="{{#str}}contactskype, local_placeholders, {{name}}{{/str}}">
-            <i class="fa fa-skype"></i> {{#str}}skypeforbusiness, local_placeholders{{/str}}</a>{{/skype}}</td>
-        </tr>
-        {{#room}}
-        <tr>
-            <th scope="row">{{#str}}room, local_placeholders{{/str}}</th>
-            <td>{{{.}}}
+            <th scope="row">{{#str}}contact, local_placeholders{{/str}}</th>
+            <td>
+            <i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:{{email}}" title="{{#str}}contactemail, local_placeholders, {{name}}{{/str}}">{{email}}</a>
+            {{#haschat}}
+                {{#chat}}
+                <i class="fa {{icon}}" aria-hidden="true"></i>
+                <a href="{{url}}">{{content}}</a><br />
+                {{/chat}}
+            {{/haschat}}
             </td>
         </tr>
-        {{/room}}
-        {{#phone}}
+        {{#hasphone}}
         <tr>
             <th scope="row">{{#str}}phone, local_placeholders{{/str}}</th>
-            <td>{{.}}</td>
-        </tr>
-        {{/phone}}
-        {{#social}}
-        <tr>
-            <th scope="row">{{#str}}social, local_placeholders{{/str}}</th>
-            <td class="placeholders-sociallinks">
-            {{#accounts}}
-                <a href="{{baseurl}}{{handle}}" title="{{#str}} socialtitle , local_placeholders, { 
-                    "name": {{#quote}} {{person}} {{/quote}},
-                    "service": {{#quote}} {{service}} {{/quote}} }{{/str}}">
-                <i class="fa fa-{{faicon}}"></i> @{{handle}}</a>{{^last}}, {{/last}}
-            {{/accounts}}
+            <td>
+                {{#phone}}
+                    {{#icon}}
+                    <i class="fa {{icon}}" aria-hidden="true"></i>
+                    {{/icon}}
+                    <a href="{{{url}}}">{{{content}}}</a>
+                {{/phone}}
             </td>
         </tr>
-        {{/social}}
+        {{/hasphone}}
+        {{#hasipphone}}
+        <tr>
+            <th scope="row">{{#str}}ipphone, local_placeholders{{/str}}</th>
+            <td>
+                {{#ipphone}}
+                    {{#icon}}
+                    <i class="fa {{.}}" aria-hidden="true"></i>
+                    {{/icon}}
+                    <a href="{{{url}}}">{{{content}}}</a>
+                {{/ipphone}}
+            </td>
+        </tr>
+        {{/hasipphone}}
+        {{#profilefields}}
+        <tr>
+            <th scope="row">{{label}}</th>
+            <td>
+                {{#icon}}
+                <i class="fa {{.}}" aria-hidden="true"></i>
+                {{/icon}}
+                {{#url}}
+                <a href="{{{.}}}">
+                {{/url}}
+                {{{content}}}
+                {{#url}}
+                </a>
+                {{/url}}
+            </td>
+        </tr>
+        {{/profilefields}}
     </table>
 </div>
 {{/people}}

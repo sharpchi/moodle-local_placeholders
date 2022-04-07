@@ -111,7 +111,7 @@ class shortcodes {
      * Returns persona cards for each module coordinator on course, if any.
      *
      * @param string $shortcode The shortcode.
-     * @param object $args The arguments of the code.
+     * @param object $args The arguments of the code. 'role' and 'title' accepted.
      * @param string|null $content The content, if the shortcode wraps content.
      * @param object $env The filter environment (contains context, noclean and originalformat).
      * @param Closure $next The function to pass the content through to process sub shortcodes.
@@ -120,7 +120,8 @@ class shortcodes {
     public static function coordinators($shortcode, $args, $content, $env, $next) {
         global $OUTPUT;
         $users = \local_placeholders\get_users_in_course_by_role('coordinator');
-        $mcs = new \local_placeholders\output\persona($users);
+        $title = $args['title'] ?? '';
+        $mcs = new \local_placeholders\output\persona($users, $title);
         return $OUTPUT->render($mcs);
     }
 
@@ -128,7 +129,7 @@ class shortcodes {
      * Returns persona cards for each module coordinator on course, if any.
      *
      * @param string $shortcode The shortcode.
-     * @param object $args The arguments of the code.
+     * @param object $args The arguments of the code. 'role' and 'title' accepted.
      * @param string|null $content The content, if the shortcode wraps content.
      * @param object $env The filter environment (contains context, noclean and originalformat).
      * @param Closure $next The function to pass the content through to process sub shortcodes.
@@ -137,7 +138,8 @@ class shortcodes {
     public static function librarians($shortcode, $args, $content, $env, $next) {
         global $OUTPUT;
         $users = \local_placeholders\get_users_in_course_by_role('sl');
-        $mcs = new \local_placeholders\output\persona($users);
+        $title = $args['title'] ?? '';
+        $mcs = new \local_placeholders\output\persona($users, $title);
         return $OUTPUT->render($mcs);
     }
 
@@ -145,7 +147,7 @@ class shortcodes {
      * Returns persona cards for each lecturer on course, if any.
      *
      * @param string $shortcode The shortcode.
-     * @param object $args The arguments of the code.
+     * @param object $args The arguments of the code. 'role' and 'title' accepted.
      * @param string|null $content The content, if the shortcode wraps content.
      * @param object $env The filter environment (contains context, noclean and originalformat).
      * @param Closure $next The function to pass the content through to process sub shortcodes.
@@ -154,7 +156,34 @@ class shortcodes {
     public static function lecturers($shortcode, $args, $content, $env, $next) {
         global $OUTPUT;
         $users = \local_placeholders\get_users_in_course_by_role('lecturer');
-        $mcs = new \local_placeholders\output\persona($users);
+        $title = $args['title'] ?? '';
+        $mcs = new \local_placeholders\output\persona($users, $title);
+        return $OUTPUT->render($mcs);
+    }
+
+    /**
+     * Returns persona cards for each given rolename on course, if any.
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code. 'role' and 'title' accepted.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
+    public static function contactcard($shortcode, $args, $content, $env, $next) {
+        global $OUTPUT;
+        if (!isset($args['role'])) {
+            return '';
+        }
+        $permittedroleids = explode(',', get_config('local_placeholders', 'persona_roles'));
+        $rolenames = \local_placeholders\get_rolenames_for_ids($permittedroleids);
+        if (!array_key_exists($args['role'], $rolenames)) {
+            return '';
+        }
+        $title = $args['title'] ?? '';
+        $users = \local_placeholders\get_users_in_course_by_role($args['role']);
+        $mcs = new \local_placeholders\output\persona($users, $title);
         return $OUTPUT->render($mcs);
     }
 
@@ -172,24 +201,6 @@ class shortcodes {
     public static function timetable($shortcode, $args, $content, $env, $next) {
         global $COURSE, $OUTPUT;
         return '';
-        if (!$COURSE) {
-            return '';
-        }
-        $metadata = \local_placeholders\get_course_metadata($COURSE->id);
-
-        $classes = \local_placeholders\timetable(
-            $metadata['modulecode'],
-            $metadata['semester'],
-            $metadata['occurrence'],
-            $metadata['academicyear'],
-            time(),
-            strtotime("+14 days", time())
-        );
-        if (empty($classes->classes)) {
-            return '';
-        }
-        $timetable = new \local_placeholders\output\timetable($classes);
-        return $OUTPUT->render($timetable);
     }
 
     /**

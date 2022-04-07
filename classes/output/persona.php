@@ -51,8 +51,9 @@ class persona implements renderable, templatable {
      *
      * @param array $people Userids of module coordinators or lecturers or librarians.
      */
-    public function __construct($people) {
+    public function __construct($people, $title = '') {
         $this->people = $people;
+        $this->title = $title;
     }
 
     /**
@@ -72,61 +73,112 @@ class persona implements renderable, templatable {
         if (empty($this->people)) {
             return false;
         }
+        if (!empty($this->title)) {
+            $personas->title = $this->title;
+        }
         list($insql, $inparams) = $DB->get_in_or_equal($this->people);
         $users = $DB->get_records_sql("SELECT * FROM {user} WHERE id $insql", $inparams);
+        // Get selected info fields. Detect if they are urls, if they are make into a link and pass that in.
 
-        list($insql, $inparams) = $DB->get_in_or_equal(['twitter', 'instagram', 'room']);
-        $profilefields = $DB->get_records_sql("SELECT * FROM {user_info_field} WHERE shortname $insql", $inparams);
+        $selectedprofilefields = explode(',', $config->persona_profilefields);
+        list($insql, $inparams) = $DB->get_in_or_equal($selectedprofilefields);
+        // Only public fields can be displayed.
+        $profilefields = $DB->get_records_sql("SELECT uif.*
+            FROM m_user_info_field uif
+            JOIN m_user_info_category uic ON uic.id = uif.categoryid
+            WHERE uif.visible = 2 AND uif.shortname $insql
+            ORDER BY uic.sortorder ASC, uif.sortorder", $inparams);
 
-        $postcodere = '/[CB][0-9]+\-[0-9]\-[0-9]+/';
-
+        $selectediconsrows = explode("\n", $config->persona_profilefieldiconmap);
+        $selectedicons = [];
+        foreach ($selectediconsrows as $row) {
+            if (empty(trim($row))) {
+                continue;
+            }
+            if (strpos($row, '=') === false) {
+                continue;
+            }
+            list($key, $icon) = explode('=', $row);
+            $selectedicons[$key] = $icon;
+        }
+        $selecteduserfields = explode(',', $config->persona_userfields);
         foreach ($users as $user) {
             $persona = new stdClass();
             $persona->name = fullname($user);
             $persona->email = $user->email;
-            $persona->photo = $OUTPUT->user_picture($user);
-            $persona->phone = $user->phone1;
-            if (isset($config->persona_showskype) && $config->persona_showskype) {
-                $persona->skype = 1;
+            $persona->photo = $OUTPUT->user_picture($user, ['size' => 96]);
+            foreach ($selecteduserfields as $selecteduserfield) {
+                switch ($selecteduserfield) {
+                    case 'teamchat':
+                        $item = new stdClass();
+                        $item->url = 'https://teams.microsoft.com/l/chat/0/0?users=' . $persona->email;
+                        $item->icon = 'fa-comments';
+                        $item->content = get_string('chatwithonteams', 'local_placeholders', $persona->name);
+                        $persona->chat[] = $item;
+                        $persona->haschat = true;
+                        break;
+                    case 'teamcall':
+                        $item = new stdClass();
+                        $item->url = 'https://teams.microsoft.com/l/call/0/0?users=' . $persona->email;
+                        $item->icon = 'fa-headphones';
+                        $item->content = get_string('callonteams', 'local_placeholders', $persona->name);
+                        $persona->ipphone[] = $item;
+                        $persona->hasipphone = true;
+                        break;
+                    case 'phone1':
+                        if (empty(trim($user->phone1))) {
+                            continue;
+                        }
+                        $item = new stdClass();
+                        $item->url = 'call:' . $user->phone1;
+                        $item->icon = 'fa-phone';
+                        $item->content = get_string('calllandline', 'local_placeholders', $persona->name);
+                        $persona->phone[] = $item;
+                        $persona->hasphone = true;
+                        break;
+                    case 'phone2':
+                        if (empty($user->{$selecteduserfield})) {
+                            continue;
+                        }
+                        $item = new stdClass();
+                        $item->url = 'call:' . $user->phone2;
+                        $item->icon = 'fa-mobile';
+                        $item->content = get_string('callmobile', 'local_placeholders', $persona->name);
+                        $persona->phone[] = $item;
+                        $persona->hasphone = true;
+                        break;
+                    case 'skype':
+                        if (empty($user->{$selecteduserfield})) {
+                            continue;
+                        }
+                        $item = new stdClass();
+                        $item->url = 'sip:' . $user->skype;
+                        $item->icon = 'fa-skype';
+                        $item->content = get_string('callskype', 'local_placeholders', $persona->name);
+                        $persona->ipphone[] = $item;
+                        $persona->hasipphone = true;
+                        break;
+                }
             }
-            $social = [];
+
+            $persona->profilefields = [];
+
             foreach ($profilefields as $profilefield) {
-                $fieldvalue = $DB->get_field('user_info_data', 'data', ['userid' => $user->id, 'fieldid' => $profilefield->id]);
-                if (!$fieldvalue) {
+                $field = $DB->get_record('user_info_data', ['userid' => $user->id, 'fieldid' => $profilefield->id]);
+                if (!$field || empty(trim($field->data))) {
                     continue;
                 }
-
-                switch ($profilefield->shortname) {
-                    case 'twitter':
-                    case 'instagram':
-                        $item = new stdClass();
-                        $item->handle = str_replace('@', '', $fieldvalue);
-                        $item->faicon = $profilefield->shortname;
-                        $item->service = ucfirst($profilefield->shortname);
-                        $item->baseurl = 'https://' . $profilefield->shortname . '.com/';
-                        $item->person = $persona->name;
-                        $social[] = $item;
-                        break;
-                    case 'phone':
-                        $persona->phone = $fieldvalue;
-                        break;
-                    case 'room':
-                        $room = $fieldvalue;
-                        if (preg_match($postcodere, $room) === 1) {
-                            $roomurl = new moodle_url('https://maps.chi.ac.uk/', [], 'room=' . $room);
-                            $room = html_writer::link($roomurl, $room,
-                                ['title' => get_string('roomdescription', 'local_placeholders', $room)]);
-                        }
-                        $persona->room = $room; // Make into map link.
-                        break;
+                $entry = new stdClass();
+                $entry->label = $profilefield->name;
+                // Urls have param4 set.
+                if (!empty($profilefield->param4)) {
+                    $entry->url = str_replace('$$', $field->data, $profilefield->param4);
                 }
-            }
-            if (count($social) > 0) {
-                // Add a last property to the last item in the social array. This allows for a comma separated list in the template.
-                // It's ugly.
-                $social[count($social) - 1]->last = 1;
-                $persona->social = new stdClass();
-                $persona->social->accounts = $social;
+                if (isset($selectedicons[$profilefield->shortname])) {
+                    $entry->icon = $selectedicons[$profilefield->shortname];
+                }
+                $entry->content = $field->data;
+                $persona->profilefields[] = $entry;
             }
             $personas->people[] = $persona;
         }

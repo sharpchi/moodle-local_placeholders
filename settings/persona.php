@@ -69,8 +69,8 @@ $description = new lang_string('persona_profilefieldsdesc', 'local_placeholders'
 // Gets available profile fields, grouped by category sort order and field sort order.
 // The output will also reflect this.
 $options = $DB->get_records_sql_menu('SELECT uif.shortname, uif.name
-    FROM m_user_info_field uif
-    JOIN m_user_info_category uic ON uic.id = uif.categoryid
+    FROM {user_info_field} uif
+    JOIN {user_info_category} uic ON uic.id = uif.categoryid
     WHERE uif.visible = 2
     ORDER BY uic.sortorder ASC, uif.sortorder');
 $setting = new admin_setting_configmultiselect($name, $title, $description, [], $options);

@@ -84,8 +84,8 @@ class persona implements renderable, templatable {
         list($insql, $inparams) = $DB->get_in_or_equal($selectedprofilefields);
         // Only public fields can be displayed.
         $profilefields = $DB->get_records_sql("SELECT uif.*
-            FROM m_user_info_field uif
-            JOIN m_user_info_category uic ON uic.id = uif.categoryid
+            FROM {user_info_field} uif
+            JOIN {user_info_category} uic ON uic.id = uif.categoryid
             WHERE uif.visible = 2 AND uif.shortname $insql
             ORDER BY uic.sortorder ASC, uif.sortorder", $inparams);
 

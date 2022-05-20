@@ -158,6 +158,19 @@ class persona implements renderable, templatable {
                         $persona->ipphone[] = $item;
                         $persona->hasipphone = true;
                         break;
+                    case 'url':
+                        if (empty($user->url) || !filter_var($user->url, FILTER_VALIDATE_URL)) {
+                            continue;
+                        }
+                        $item = new stdClass();
+                        // Strip http(s) and readd it. Ensures using https, and adds it if not present.
+                        $url = preg_replace('/http(s)?:\/\//', '', $user->url);
+                        $item->url = 'https://' . $url;
+                        $item->icon = 'fa-globe';
+                        $item->content = $url;
+                        $persona->link = $item;
+                        $persona->hasurl = true;
+                        break;
                 }
             }
 

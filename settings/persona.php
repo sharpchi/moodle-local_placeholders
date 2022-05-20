@@ -57,7 +57,8 @@ $options = [
     'phone2' => 'Mobile',
     'teamchat' => 'Teams chat',
     'teamcall' => 'Teams call',
-    'skype' => 'Skype'
+    'skype' => 'Skype',
+    'url' => 'Web page'
 ];
 $setting = new admin_setting_configmultiselect($name, $title, $description, [], $options);
 $page->add($setting);

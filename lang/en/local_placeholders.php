@@ -92,3 +92,5 @@ $string['shortcode:timetable'] = 'This is not currently live. Please do not use.
 $string['social'] = 'Social';
 $string['socialtitle'] = '{$a->service} account for {$a->name}';
 $string['skypeforbusiness'] = 'Skype {$a}';
+
+$string['website'] = 'Website';

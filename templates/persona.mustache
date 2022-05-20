@@ -45,6 +45,17 @@
             {{/haschat}}
             </td>
         </tr>
+        {{#link}}
+        <tr>
+            <th scope="row">{{#str}}website, local_placeholders{{/str}}</th>
+            <td>
+                {{#icon}}
+                <i class="fa {{icon}}" aria-hidden="true"></i>
+                {{/icon}}
+                <a href="{{{url}}}">{{{content}}}</a>
+            </td>
+        </tr>
+        {{/link}}
         {{#hasphone}}
         <tr>
             <th scope="row">{{#str}}phone, local_placeholders{{/str}}</th>

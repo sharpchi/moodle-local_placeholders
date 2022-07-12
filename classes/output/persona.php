@@ -127,7 +127,7 @@ class persona implements renderable, templatable {
                         break;
                     case 'phone1':
                         if (empty(trim($user->phone1))) {
-                            continue;
+                            continue 2;
                         }
                         $item = new stdClass();
                         $item->url = 'call:' . $user->phone1;
@@ -138,7 +138,7 @@ class persona implements renderable, templatable {
                         break;
                     case 'phone2':
                         if (empty($user->{$selecteduserfield})) {
-                            continue;
+                            continue 2;
                         }
                         $item = new stdClass();
                         $item->url = 'call:' . $user->phone2;
@@ -149,7 +149,7 @@ class persona implements renderable, templatable {
                         break;
                     case 'skype':
                         if (empty($user->{$selecteduserfield})) {
-                            continue;
+                            continue 2;
                         }
                         $item = new stdClass();
                         $item->url = 'sip:' . $user->skype;
@@ -160,7 +160,7 @@ class persona implements renderable, templatable {
                         break;
                     case 'url':
                         if (empty($user->url) || !filter_var($user->url, FILTER_VALIDATE_URL)) {
-                            continue;
+                            continue 2;
                         }
                         $item = new stdClass();
                         // Strip http(s) and readd it. Ensures using https, and adds it if not present.

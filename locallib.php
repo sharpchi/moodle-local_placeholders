@@ -165,7 +165,6 @@ function get_course_roles_menu() {
     $sql = "SELECT r.id, r.name, r.shortname
               FROM {role} r
          LEFT JOIN {role_context_levels} rcl ON (rcl.roleid = r.id AND rcl.contextlevel = :contextlevel)
-         LEFT JOIN {role_names} rn ON rn.roleid = r.id
              WHERE rcl.id IS NOT NULL
           ORDER BY sortorder DESC";
     $params = [

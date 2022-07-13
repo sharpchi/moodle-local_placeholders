@@ -25,10 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020051306;
+$plugin->version   = 2020051307;
 $plugin->requires  = 2018120300;
 $plugin->component = 'local_placeholders';
-$plugin->release   = '3.9.6';
+$plugin->release   = '3.9.7';
 $plugin->maturity  = MATURITY_ALPHA;
 $plugin->dependencies = [
     'filter_shortcodes'  => 2018050800,

@@ -28,8 +28,6 @@ namespace local_placeholders;
 use context_course;
 use stdClass;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Called by the installer to set up user profile fields for Moodle.
  *
@@ -175,6 +173,12 @@ function get_course_roles_menu() {
     return role_fix_names($roles, null, ROLENAME_ORIGINAL, true);
 }
 
+/**
+ * Given roleids, return the shortnames
+ *
+ * @param array $roleids
+ * @return array
+ */
 function get_rolenames_for_ids($roleids) {
     global $DB;
     list($insql, $inparams) = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED);

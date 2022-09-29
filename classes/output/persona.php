@@ -32,8 +32,6 @@ use renderable;
 use stdClass;
 use templatable;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Personal contact details card
  */
@@ -50,6 +48,7 @@ class persona implements renderable, templatable {
      * Array of userids to display persona tables.
      *
      * @param array $people Userids of module coordinators or lecturers or librarians.
+     * @param string $title Optional title
      */
     public function __construct($people, $title = '') {
         $this->people = $people;

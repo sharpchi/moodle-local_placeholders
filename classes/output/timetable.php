@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * local_placeholders file for Timetables.
+ * File for Timetables.
+ * 
  * Not currently being used as we don't have any link to a Timetable.
  *
  * @package   local_placeholders
@@ -23,8 +24,6 @@
  * @copyright 2021 University of Chichester {@link https://www.chi.ac.uk}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
 
 namespace local_placeholders\output;
 

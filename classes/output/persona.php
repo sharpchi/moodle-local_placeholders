@@ -78,15 +78,17 @@ class persona implements renderable, templatable {
         list($insql, $inparams) = $DB->get_in_or_equal($this->people);
         $users = $DB->get_records_sql("SELECT * FROM {user} WHERE id $insql", $inparams);
         // Get selected info fields. Detect if they are urls, if they are make into a link and pass that in.
-
-        $selectedprofilefields = explode(',', $config->persona_profilefields);
-        list($insql, $inparams) = $DB->get_in_or_equal($selectedprofilefields);
-        // Only public fields can be displayed.
-        $profilefields = $DB->get_records_sql("SELECT uif.*
-            FROM {user_info_field} uif
-            JOIN {user_info_category} uic ON uic.id = uif.categoryid
-            WHERE uif.visible = 2 AND uif.shortname $insql
-            ORDER BY uic.sortorder ASC, uif.sortorder", $inparams);
+        $profilefields = [];
+        if (isset($config->persona_profilefields)) {
+            $selectedprofilefields = explode(',', $config->persona_profilefields);
+            list($insql, $inparams) = $DB->get_in_or_equal($selectedprofilefields);
+            // Only public fields can be displayed.
+            $profilefields = $DB->get_records_sql("SELECT uif.*
+                FROM {user_info_field} uif
+                JOIN {user_info_category} uic ON uic.id = uif.categoryid
+                WHERE uif.visible = 2 AND uif.shortname $insql
+                ORDER BY uic.sortorder ASC, uif.sortorder", $inparams);
+        }
 
         $selectediconsrows = explode("\n", $config->persona_profilefieldiconmap);
         $selectedicons = [];

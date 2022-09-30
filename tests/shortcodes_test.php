@@ -30,11 +30,26 @@ global $CFG;
 
 use advanced_testcase;
 
+/**
+ * Shortcodes tests
+ *
+ * @covers \local_placeholder\local\shortcodes
+ */
 class shortcodes_test extends advanced_testcase {
+    /**
+     * Reset after test
+     *
+     * @return void
+     */
     public function setUp(): void {
-       $this->resetAfterTest();
+        $this->resetAfterTest();
     }
 
+    /**
+     * Modulecode shortcode test
+     *
+     * @return void
+     */
     public function test_modulecode() {
         global $PAGE;
         $course = $this->getDataGenerator()->create_course([
@@ -44,13 +59,18 @@ class shortcodes_test extends advanced_testcase {
         $formattedtext = \local_placeholders\local\shortcodes::modulecode(null, null, null, null, null);
         $this->assertSame('ABC101_S1_A_20', $formattedtext);
 
-        // Course with no idnumber returns an empty string;
+        // Course with no idnumber returns an empty string.
         $course = $this->getDataGenerator()->create_course();
         $PAGE->set_course($course);
         $formattedtext = \local_placeholders\local\shortcodes::modulecode(null, null, null, null, null);
         $this->assertSame('', $formattedtext);
     }
 
+    /**
+     * Modulename shortcode test
+     *
+     * @return void
+     */
     public function test_modulename() {
         global $PAGE;
         $course = $this->getDataGenerator()->create_course([
@@ -61,6 +81,11 @@ class shortcodes_test extends advanced_testcase {
         $this->assertSame('My test course', $formattedtext);
     }
 
+    /**
+     * Contactcard shortcode test
+     *
+     * @return void
+     */
     public function test_contactcard() {
         global $DB, $PAGE;
         $course = $this->getDataGenerator()->create_course();
@@ -115,7 +140,7 @@ class shortcodes_test extends advanced_testcase {
         $formattedtext = \local_placeholders\local\shortcodes::contactcard(null, ['role' => 'student'], null, null, null);
         $this->assertSame('', $formattedtext);
 
-        // Add the Twitter field as an option
+        // Add the Twitter field as an option.
         set_config('persona_profilefields', 'twitter', 'local_placeholders');
         $regexpattern = "/.*placeholders_persona.*FULLNAME.*id=USERID&amp;course=COURSEID.*fa-envelope.*" .
             "<a href=\"mailto:USERNAME.*TWITTER/is";

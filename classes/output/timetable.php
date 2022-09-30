@@ -16,7 +16,7 @@
 
 /**
  * File for Timetables.
- * 
+ *
  * Not currently being used as we don't have any link to a Timetable.
  *
  * @package   local_placeholders
@@ -30,8 +30,6 @@ namespace local_placeholders\output;
 use renderable;
 use renderer_base;
 use templatable;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * Timetable renderer class.

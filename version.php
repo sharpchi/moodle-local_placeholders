@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020051307;
+$plugin->version   = 2020051308;
 $plugin->requires  = 2018120300;
 $plugin->component = 'local_placeholders';
 $plugin->release   = '3.9.7';

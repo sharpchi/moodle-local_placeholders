@@ -50,17 +50,22 @@ class shortcodes {
      * @return string The new content.
      */
     public static function modulecode($shortcode, $args, $content, $env, $next) {
-        global $COURSE;
-
-        if (!$COURSE) {
+        global $DB, $COURSE;
+        $courseid = $args['courseid'] ?? null;
+        if ($courseid) {
+            $course = $DB->get_record('course', ['id' => $courseid]);
+        } else {
+            $course = $COURSE;
+        }
+        if (!$course) {
             return '';
         }
 
-        if (empty($COURSE->idnumber)) {
+        if (empty($course->idnumber)) {
             return '';
         }
 
-        return $COURSE->idnumber;
+        return $course->idnumber;
     }
 
     /**
@@ -74,17 +79,22 @@ class shortcodes {
      * @return string The new content.
      */
     public static function modulename($shortcode, $args, $content, $env, $next) {
-        global $COURSE;
-
-        if (!$COURSE) {
+        global $DB, $COURSE;
+        $courseid = $args['courseid'] ?? null;
+        if ($courseid) {
+            $course = $DB->get_record('course', ['id' => $courseid]);
+        } else {
+            $course = $COURSE;
+        }
+        if (!$course) {
             return '';
         }
 
-        if (empty($COURSE->fullname)) {
+        if (empty($course->fullname)) {
             return '';
         }
 
-        return $COURSE->fullname;
+        return $course->fullname;
     }
 
     /**
@@ -98,12 +108,17 @@ class shortcodes {
      * @return string The new content.
      */
     public static function modulelevel($shortcode, $args, $content, $env, $next) {
-        global $COURSE;
-
-        if (!$COURSE) {
+        global $DB, $COURSE;
+        $courseid = $args['courseid'] ?? null;
+        if ($courseid) {
+            $course = $DB->get_record('course', ['id' => $courseid]);
+        } else {
+            $course = $COURSE;
+        }
+        if (!$course) {
             return '';
         }
-        $metadata = \local_placeholders\get_course_metadata($COURSE->id);
+        $metadata = \local_placeholders\get_course_metadata($course->id);
         return $metadata['level'] ?? '';
     }
 
@@ -214,31 +229,42 @@ class shortcodes {
      * @return string The new content.
      */
     public static function startenddates($shortcode, $args, $content, $env, $next) {
-        global $COURSE, $USER;
-
-        if (!$COURSE) {
+        global $DB, $COURSE, $USER;
+        $courseid = $args['courseid'] ?? null;
+        if ($courseid) {
+            $course = $DB->get_record('course', ['id' => $courseid]);
+        } else {
+            $course = $COURSE;
+        }
+        if (!$course) {
             return '';
         }
 
-        $context = context_course::instance($COURSE->id);
+        $context = context_course::instance($course->id);
 
         $params = new stdClass();
-        $startdate = $COURSE->startdate;
-        $enddate = $COURSE->enddate;
+        $startdate = $course->startdate;
+        $enddate = $course->enddate;
         if ($startdate == 0) {
             $startdate = time();
         }
         $params->start = date('d/m/Y', $startdate);
+        $params->startmachine = date('Y-m-d', $startdate);
         if ($enddate == 0) {
             $params->end = get_string('coursenoend', 'local_placeholders');
+            $params->endmachine = '';
         } else {
             $params->end = date('d/m/Y', $enddate);
+            $params->endmachine = date('Y-m-d', $enddate);
         }
         $return = get_string('coursestartend', 'local_placeholders', $params);
         if (!has_capability('moodle/course:update', $context, $USER)) {
             return $return;
         }
-        $link = new moodle_url('/course/edit.php', ['id' => $COURSE->id]);
+        if (!get_config('local_placeholders', 'includecourseeditlink')) {
+            return $return;
+        }
+        $link = new moodle_url('/course/edit.php', ['id' => $course->id]);
         return $return . ' ' . html_writer::link($link, get_string('editsettings'));
     }
 

@@ -34,7 +34,7 @@ $string['contactdetails'] = '{$a}\'s contact details:';
 $string['contactemail'] = 'Email {$a}';
 $string['contactskype'] = 'Contact {$a} using Skype for Business. Note: Skype for Business needs to be installed.';
 $string['coursenoend'] = 'No end date set';
-$string['coursestartend'] = '{$a->start} - {$a->end}';
+$string['coursestartend'] = '<time datetime="{$a->startmachine}">{$a->start}</time> - <time datetime="{$a->endmachine}">{$a->end}</time>';
 
 $string['email'] = 'Email';
 $string['emailperson'] = 'Email {$a}';

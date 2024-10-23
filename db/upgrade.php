@@ -37,7 +37,7 @@ function xmldb_local_placeholders_upgrade($oldversion) {
         foreach ($fields as $field) {
             \local_placeholders\set_userinfofield($field);
         }
-        upgrade_plugin_savepoint(true, '2020051302', 'local', 'placeholders');
+        upgrade_plugin_savepoint(true, 2020051302, 'local', 'placeholders');
     }
 
     return true;

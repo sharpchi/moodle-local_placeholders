@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http: //www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_placeholders/persona
+    @template local_placeholders/persona
 
     Table of contents for persona
 
@@ -25,8 +25,43 @@
     Data attributes required for JS:
     * none
 
-    Context variables required for this template:
-    * items - An array of items
+    Example context (json):
+    {
+        "title": "Title displayed",
+        "people": [{
+            "name": "John Smith",
+            "photo": "Photo url and link",
+            "email": "john.smith@example.com",
+            "haschat": true,
+            "chat": {
+                "content": "Chat with John Smith on Teams",
+                "icon": "fa-comments",
+                "url": "https://teams.microsoft.com/l/chat/0/0?users=john.smith@example.com"
+            },
+            "link": {
+                "content": "http://www.example.com",
+                "icon": "fa-globe",
+                "url": "http://www.example.com"
+            },
+            "hasphone": "true",
+            "phone": [{
+                "content": "Call John Smith on the phone",
+                "icon": "fa-phone",
+                "url": "555-5555"
+            }],
+            "hasipphone": "true",
+            "ipphone": [{
+                "content": "Call John Smith on the Teams",
+                "icon": "fa-headphones",
+                "url": "https://teams.microsoft.com/l/call/0/0?users=john.smith@example.com"
+            }],
+            "profilefields": [{
+                "content": "johnsmith",
+                "icon": "fa-linkedin",
+                "url": "https://linkedin.com/in/johnsmith"
+            }]
+        }]
+    }
 }}
 {{#title}}<h3>{{.}}</h3>{{/title}}
 {{#people}}

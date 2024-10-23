@@ -27,7 +27,7 @@ namespace local_placeholders\output;
 
 use html_writer;
 use moodle_url;
-use renderer_base;
+use core\output\renderer_base;
 use renderable;
 use stdClass;
 use templatable;
@@ -43,6 +43,13 @@ class persona implements renderable, templatable {
      * @var array
      */
     protected $people;
+
+    /**
+     * Title for persona area
+     *
+     * @var string
+     */
+    protected $title;
 
     /**
      * Array of userids to display persona tables.

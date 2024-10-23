@@ -29,9 +29,9 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/placeholders/locallib.php');
 
-use context_course;
-use html_writer;
-use moodle_url;
+use core\context;
+use core\output\html_writer;
+use core\url;
 use stdClass;
 
 /**
@@ -211,7 +211,6 @@ class shortcodes {
      * @param object $env The filter environment (contains context, noclean and originalformat).
      * @param Closure $next The function to pass the content through to process sub shortcodes.
      * @return string The new content.
-     * @todo Needs implementing.
      */
     public static function timetable($shortcode, $args, $content, $env, $next) {
         global $COURSE, $OUTPUT;
@@ -240,7 +239,7 @@ class shortcodes {
             return '';
         }
 
-        $context = context_course::instance($course->id);
+        $context = context\course::instance($course->id);
 
         $params = new stdClass();
         $startdate = $course->startdate;
@@ -264,7 +263,7 @@ class shortcodes {
         if (!get_config('local_placeholders', 'includecourseeditlink')) {
             return $return;
         }
-        $link = new moodle_url('/course/edit.php', ['id' => $course->id]);
+        $link = new url('/course/edit.php', ['id' => $course->id]);
         return $return . ' ' . html_writer::link($link, get_string('editsettings'));
     }
 

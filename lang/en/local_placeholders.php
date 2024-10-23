@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Collection of shortcodes
  *
@@ -89,8 +90,8 @@ $string['shortcode:startenddates'] = 'Displays start and end dates (if specified
 
 $string['shortcode:timetable'] = 'This is not currently live. Please do not use.';
 
+$string['skypeforbusiness'] = 'Skype {$a}';
 $string['social'] = 'Social';
 $string['socialtitle'] = '{$a->service} account for {$a->name}';
-$string['skypeforbusiness'] = 'Skype {$a}';
 
 $string['website'] = 'Website';

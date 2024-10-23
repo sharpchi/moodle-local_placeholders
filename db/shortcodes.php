@@ -30,42 +30,42 @@ defined('MOODLE_INTERNAL') || die();
 $shortcodes = [
     'modulecode' => [
         'callback' => 'local_placeholders\local\shortcodes::modulecode',
-        'description' => 'shortcode:modulecode'
+        'description' => 'shortcode:modulecode',
     ],
     'modulename' => [
         'callback' => 'local_placeholders\local\shortcodes::modulename',
-        'description' => 'shortcode:modulename'
+        'description' => 'shortcode:modulename',
     ],
     'modulelevel' => [
         'callback' => 'local_placeholders\local\shortcodes::modulelevel',
-        'description' => 'shortcode:modulelevel'
+        'description' => 'shortcode:modulelevel',
     ],
     'coordinators' => [
         'callback' => 'local_placeholders\local\shortcodes::coordinators',
-        'description' => 'shortcode:coordinators'
+        'description' => 'shortcode:coordinators',
     ],
     'librarians' => [
         'callback' => 'local_placeholders\local\shortcodes::librarians',
-        'description' => 'shortcode:librarians'
+        'description' => 'shortcode:librarians',
     ],
     'lecturers' => [
         'callback' => 'local_placeholders\local\shortcodes::lecturers',
-        'description' => 'shortcode:lecturers'
+        'description' => 'shortcode:lecturers',
     ],
     'timetable' => [
         'callback' => 'local_placeholders\local\shortcodes::timetable',
-        'description' => 'shortcode:timetable'
+        'description' => 'shortcode:timetable',
     ],
     'startenddates' => [
         'callback' => 'local_placeholders\local\shortcodes::startenddates',
-        'description' => 'shortcode:startenddates'
+        'description' => 'shortcode:startenddates',
     ],
     'coursefield' => [
         'callback' => 'local_placeholders\local\shortcodes::coursefield',
-        'description' => 'shortcode:coursefield'
+        'description' => 'shortcode:coursefield',
     ],
     'contactcard' => [
         'callback' => 'local_placeholders\local\shortcodes::contactcard',
-        'description' => 'shortcode:contactcard'
-    ]
+        'description' => 'shortcode:contactcard',
+    ],
 ];

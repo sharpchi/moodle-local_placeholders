@@ -58,7 +58,7 @@ $options = [
     'teamchat' => 'Teams chat',
     'teamcall' => 'Teams call',
     'skype' => 'Skype',
-    'url' => 'Web page'
+    'url' => 'Web page',
 ];
 $setting = new admin_setting_configmultiselect($name, $title, $description, [], $options);
 $page->add($setting);

@@ -25,7 +25,7 @@
 
 namespace local_placeholders;
 
-use context_course;
+use core\context;
 use stdClass;
 
 /**
@@ -45,7 +45,7 @@ function set_userinfofield($shortname) {
             'param1' => "30",
             'param2' => "15",
             'param4' => 'https://instagram.com/$$',
-            'param5' => '_blank'
+            'param5' => '_blank',
         ],
         'linkedin' => [
             'name' => 'Linkedin',
@@ -55,7 +55,7 @@ function set_userinfofield($shortname) {
             'param1' => "30",
             'param2' => "15",
             'param4' => 'https://linkedin.com/in/$$',
-            'param5' => '_blank'
+            'param5' => '_blank',
         ],
         'twitter' => [
             'name' => 'Twitter',
@@ -65,7 +65,7 @@ function set_userinfofield($shortname) {
             'param1' => "30",
             'param2' => "15",
             'param4' => 'https://twitter.com/$$',
-            'param5' => '_blank'
+            'param5' => '_blank',
         ],
     ];
 
@@ -140,7 +140,7 @@ function set_userinfofield($shortname) {
  */
 function get_users_in_course_by_role($roleshortname) {
     global $DB, $COURSE;
-    $context = context_course::instance($COURSE->id);
+    $context = context\course::instance($COURSE->id);
     $roleid = $DB->get_field('role', 'id', ['shortname' => $roleshortname]);
     // Check enrolment or user isn't suspended or inactive.
     // ue.status = ENROL_USER_ACTIVE.
@@ -166,7 +166,7 @@ function get_course_roles_menu() {
              WHERE rcl.id IS NOT NULL
           ORDER BY sortorder DESC";
     $params = [
-        'contextlevel' => CONTEXT_COURSE
+        'contextlevel' => CONTEXT_COURSE,
     ];
     $roles = $DB->get_records_sql($sql, $params);
 
@@ -199,7 +199,6 @@ function get_rolenames_for_ids($roleids) {
  * @param int $start Start timestamp the sessions to display - now?
  * @param int $end End timestamp of the sessions to display now+2weeks.
  * @return void
- * @todo Not implemented.
  */
 function timetable($code, $semester, $occurrence, $year, $start, $end) {
     global $DB;

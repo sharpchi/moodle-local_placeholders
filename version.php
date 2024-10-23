@@ -25,12 +25,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020051308;
-$plugin->requires  = 2018120300;
+$plugin->version   = 2024102300;
+$plugin->requires  = 2024100700;
 $plugin->component = 'local_placeholders';
-$plugin->release   = '3.9.7';
+$plugin->release   = '4.5.0';
 $plugin->maturity  = MATURITY_ALPHA;
 $plugin->dependencies = [
-    'filter_shortcodes'  => 2018050800,
-    'theme_boost' => 2019111800
+    'filter_shortcodes'  => 2024090500,
+    'theme_boost' => 2024100700,
 ];
+$plugin->supported = [405, 500];

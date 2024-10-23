@@ -35,25 +35,17 @@ use advanced_testcase;
  *
  * @covers \local_placeholder\local\shortcodes
  */
-class shortcodes_test extends advanced_testcase {
-    /**
-     * Reset after test
-     *
-     * @return void
-     */
-    public function setUp(): void {
-        $this->resetAfterTest();
-    }
-
+final class shortcodes_test extends advanced_testcase {
     /**
      * Modulecode shortcode test
      *
      * @return void
      */
-    public function test_modulecode() {
+    public function test_modulecode(): void {
         global $PAGE;
+        $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course([
-            'idnumber' => 'ABC101_S1_A_20'
+            'idnumber' => 'ABC101_S1_A_20',
         ]);
         $PAGE->set_course($course);
         $formattedtext = \local_placeholders\local\shortcodes::modulecode(null, null, null, null, null);
@@ -71,10 +63,11 @@ class shortcodes_test extends advanced_testcase {
      *
      * @return void
      */
-    public function test_modulename() {
+    public function test_modulename(): void {
         global $PAGE;
+        $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course([
-            'fullname' => 'My test course'
+            'fullname' => 'My test course',
         ]);
         $PAGE->set_course($course);
         $formattedtext = \local_placeholders\local\shortcodes::modulename(null, null, null, null, null);
@@ -86,8 +79,9 @@ class shortcodes_test extends advanced_testcase {
      *
      * @return void
      */
-    public function test_contactcard() {
+    public function test_contactcard(): void {
         global $DB, $PAGE;
+        $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
         $PAGE->set_course($course);
         $roles = $DB->get_records('role', [], '', 'shortname, id');
@@ -101,10 +95,10 @@ class shortcodes_test extends advanced_testcase {
             'param1' => "30",
             'param2' => "15",
             'param4' => 'https://twitter.com/$$',
-            'param5' => '_blank'
+            'param5' => '_blank',
         ]);
         $editingteacher = $this->getDataGenerator()->create_user([
-            'profile_field_twitter' => 'testtwitacc'
+            'profile_field_twitter' => 'testtwitacc',
         ]);
         $teacher = $this->getDataGenerator()->create_user();
         $student = $this->getDataGenerator()->create_user();

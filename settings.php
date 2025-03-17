@@ -25,9 +25,19 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$parent = new admin_category('local_placeholderscat', new lang_string('pluginname', 'local_placeholders'));
 if ($hassiteconfig) {
+    $ADMIN->add('localplugins', $parent);
+
+    $name = 'local_placeholders/managesnippets';
+    $title = new lang_string('managesnippets', 'local_placeholders');
+    $url = new moodle_url('/local/placeholders/snippets.php');
+    $externalpage = new admin_externalpage($name, $title, $url);
+
+    $ADMIN->add('local_placeholderscat', $externalpage);
+
     $settings = new theme_boost_admin_settingspage_tabs('local_placeholders', get_string('pluginname', 'local_placeholders'));
     include('settings/persona.php');
 
-    $ADMIN->add('localplugins', $settings);
+    $ADMIN->add('local_placeholderscat', $settings);
 }

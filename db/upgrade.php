@@ -32,12 +32,37 @@ require_once($CFG->dirroot . '/local/placeholders/locallib.php');
  * @return bool
  */
 function xmldb_local_placeholders_upgrade($oldversion) {
+    global $DB;
+    $dbman = $DB->get_manager();
+
     if ($oldversion < 2020051302) {
         $fields = ['linkedin'];
         foreach ($fields as $field) {
             \local_placeholders\set_userinfofield($field);
         }
         upgrade_plugin_savepoint(true, 2020051302, 'local', 'placeholders');
+    }
+
+    if ($oldversion < 2025022800) {
+        $table = new xmldb_table('local_placeholders_snippet');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('slug', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('title', XMLDB_TYPE_CHAR, '255, null, XMLDB_NOTNULL, null, null');
+        $table->add_field('content', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('contentformat', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, 0);
+        $table->add_field('courses', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('categories', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0);
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_index('slug', XMLDB_INDEX_UNIQUE, ['slug']);
+
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        upgrade_plugin_savepoint(true, 2025022800, 'local', 'placeholders');
     }
 
     return true;

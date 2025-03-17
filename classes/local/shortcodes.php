@@ -29,6 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/placeholders/locallib.php');
 
+use context_system;
 use core\context;
 use core\output\html_writer;
 use core\url;
@@ -298,5 +299,51 @@ class shortcodes {
             $value = "Expiration date: " . userdate($value);
         }
         return $value;
+    }
+
+    /**
+     * Snippet shortcode
+     *
+     * @param string $shortcode The shortcode.
+     * @param object $args The arguments of the code.
+     * @param string|null $content The content, if the shortcode wraps content.
+     * @param object $env The filter environment (contains context, noclean and originalformat).
+     * @param Closure $next The function to pass the content through to process sub shortcodes.
+     * @return string The new content.
+     */
+    public static function snippet($shortcode, $args, $content, $env, $next): string {
+        global $DB, $PAGE;
+
+        $id = $args['id'] ?? null;
+        $slug = $args['slug'] ?? null;
+        if (!$id && !$slug) {
+            return '';
+        }
+
+        // Use either the id or the slug, prefer the id.
+        $snippet = $DB->get_record('local_placeholders_snippet', ['id' => $id]);
+        if (!$snippet) {
+            $snippet = $DB->get_record('local_placeholders_snippet', ['slug' => $slug]);
+            if (!$snippet) {
+                return '';
+            }
+        }
+
+        // SOL TODO: Add context checks on course and category ids, and maybe some kind of key.
+
+        $content = file_rewrite_pluginfile_urls(
+            // The content of the text stored in the database.
+            $snippet->content,
+            // The pluginfile URL which will serve the request.
+            'pluginfile.php',
+            // The combination of contextid / component / filearea / itemid
+            // form the virtual bucket that file are stored in.
+            context_system::instance()->id,
+            'local_placeholders',
+            'snippet',
+            $snippet->id
+        );
+
+        return $next($content);
     }
 }

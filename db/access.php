@@ -15,23 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version file.
+ * Capability definitions for Placeholders
+ *
+ * Documentation: {@link https://moodledev.io/docs/apis/subsystems/access}
  *
  * @package    local_placeholders
- * @copyright  2019 University of Chichester {@link https://www.chi.ac.uk}
- * @author     Mark Sharp <mark.sharp@solent.ac.uk>
+ * @category   access
+ * @copyright  2025 Southampton Solent University {@link https://www.solent.ac.uk}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025022800;
-$plugin->requires  = 2024100700;
-$plugin->component = 'local_placeholders';
-$plugin->release   = '4.5.0';
-$plugin->maturity  = MATURITY_ALPHA;
-$plugin->dependencies = [
-    'filter_shortcodes'  => 2024090500,
-    'theme_boost' => 2024100700,
+$capabilities = [
+    'local/placeholders:managesnippets' => [
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
 ];
-$plugin->supported = [405, 500];

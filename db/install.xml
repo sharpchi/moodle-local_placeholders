@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/placeholders/db" VERSION="20250228" COMMENT="XMLDB file for Moodle local/placeholders"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_placeholders_snippet" COMMENT="User defined content">
+      <FIELDS>
+          <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
+          <FIELD NAME="slug" SEQUENCE="false" TYPE="char" NOTNULL="true" LENGTH="100" />
+          <FIELD NAME="title" SEQUENCE="false" TYPE="char" NOTNULL="true" LENGTH="255" />
+          <FIELD NAME="content" SEQUENCE="false" TYPE="text" NOTNULL="true" LENGTH="big" />
+          <FIELD NAME="contentformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+          <FIELD NAME="courses" SEQUENCE="false" TYPE="text" NOTNULL="false"/>
+          <FIELD NAME="categories" SEQUENCE="false" TYPE="text" NOTNULL="false" />
+          <FIELD NAME="usermodified" SEQUENCE="false" TYPE="int" NOTNULL="true" LENGTH="10" UNSIGNED="true" />
+          <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" DEFAULT="0" />
+          <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" DEFAULT="0" />
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="slug" UNIQUE="true" FIELDS="slug"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

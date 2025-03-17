@@ -25,23 +25,37 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['addnewsnippet'] = 'Add new snippet';
 $string['calllandline'] = 'Call {$a} on the phone';
 $string['callmobile'] = 'Call {$a} on their mobile';
 $string['callonteams'] = 'Call {$a} on Teams';
 $string['callskype'] = 'Call {$a} on Skype';
 $string['chatwithonteams'] = 'Chat with {$a} on Teams';
+$string['confirmdeletesnippet'] = 'Are you sure you want to delete this snippet?';
 $string['contact'] = 'Contact';
 $string['contactdetails'] = '{$a}\'s contact details:';
 $string['contactemail'] = 'Email {$a}';
 $string['contactskype'] = 'Contact {$a} using Skype for Business. Note: Skype for Business needs to be installed.';
+$string['content'] = 'Content';
+$string['content_desc'] = 'Content description';
 $string['coursenoend'] = 'No end date set';
 $string['coursestartend'] = '<time datetime="{$a->startmachine}">{$a->start}</time> - <time datetime="{$a->endmachine}">{$a->end}</time>';
 
+$string['duplicate_slug'] = 'This slug is already in use.';
+
+$string['editsnippet'] = 'Edit snippet';
 $string['email'] = 'Email';
 $string['emailperson'] = 'Email {$a}';
 $string['enabled'] = 'Enabled';
 
+$string['id'] = 'ID';
+$string['invalidcharsinslug'] = 'Invalid characters in slug, must only contain letters, numbers or -.';
 $string['ipphone'] = 'IP Phone';
+
+$string['managesnippets'] = 'Manage snippets';
+$string['modifiedby'] = 'Modified by';
+
+$string['newsnippet'] = 'New snippet';
 
 $string['persona'] = 'Persona';
 $string['persona_enableddesc'] = 'Enable output of Contact details';
@@ -56,9 +70,11 @@ $string['persona_showskypedesc'] = 'Show Skype for Business sip link (this may n
 $string['persona_userfields'] = 'Display userfields';
 $string['persona_userfieldsdesc'] = 'Only display these user fields';
 $string['phone'] = 'Phone';
+$string['placeholdercode'] = 'Placeholder code. Copy and paste this into your content.';
+$string['placeholders:managesnippets'] = 'Manage snippets';
 $string['pluginname'] = 'Placeholders';
 
-
+$string['restricttocourses'] = 'Restrict to courses';
 $string['room'] = 'Room';
 $string['roomdescription'] = 'Find {$a} on the map';
 
@@ -85,13 +101,24 @@ $string['shortcode:modulecode_help'] = 'The shortcode is made up of a number of 
 * Year: The academic year of this module';
 $string['shortcode:modulelevel'] = 'Qualification level associated with this module.';
 $string['shortcode:modulename'] = 'The title of this module.';
-
+$string['shortcode:snippet'] = 'Places preconfigured content selected by id';
 $string['shortcode:startenddates'] = 'Displays start and end dates (if specified)';
 
 $string['shortcode:timetable'] = 'This is not currently live. Please do not use.';
 
 $string['skypeforbusiness'] = 'Skype {$a}';
+$string['slug'] = 'Slug';
+$string['slug_help'] = 'The slug is used to identify the snippet in the shortcode. It must be unique and contain only letters, numbers or -.';
+$string['snippet'] = 'Snippet';
+$string['snippetcreated'] = 'Snippet created';
+$string['snippetdeleted'] = 'Snippet {$a} deleted';
+$string['snippets'] = 'Snippets';
+$string['snippetupdated'] = 'Snippet updated';
 $string['social'] = 'Social';
 $string['socialtitle'] = '{$a->service} account for {$a->name}';
+
+$string['timecreated'] = 'Time created';
+$string['timemodified'] = 'Time modified';
+$string['title'] = 'Title';
 
 $string['website'] = 'Website';

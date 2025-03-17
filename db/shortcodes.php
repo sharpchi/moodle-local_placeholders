@@ -68,4 +68,8 @@ $shortcodes = [
         'callback' => 'local_placeholders\local\shortcodes::contactcard',
         'description' => 'shortcode:contactcard',
     ],
+    'snippet' => [
+        'callback' => 'local_placeholders\local\shortcodes::snippet',
+        'description' => 'shortcode:snippet',
+    ],
 ];

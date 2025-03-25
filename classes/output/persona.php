@@ -52,14 +52,23 @@ class persona implements renderable, templatable {
     protected $title;
 
     /**
+     * Exclude these field shortcodes
+     *
+     * @var string[]
+     */
+    protected $exclude;
+
+    /**
      * Array of userids to display persona tables.
      *
      * @param array $people Userids of module coordinators or lecturers or librarians.
      * @param string $title Optional title
+     * @param array $exclude Exclude these field shortcodes
      */
-    public function __construct($people, $title = '') {
+    public function __construct($people, $title = '', $exclude = []) {
         $this->people = $people;
         $this->title = $title;
+        $this->exclude = $exclude;
     }
 
     /**
@@ -88,13 +97,18 @@ class persona implements renderable, templatable {
         $profilefields = [];
         if (isset($config->persona_profilefields)) {
             $selectedprofilefields = explode(',', $config->persona_profilefields);
-            list($insql, $inparams) = $DB->get_in_or_equal($selectedprofilefields);
-            // Only public fields can be displayed.
-            $profilefields = $DB->get_records_sql("SELECT uif.*
-                FROM {user_info_field} uif
-                JOIN {user_info_category} uic ON uic.id = uif.categoryid
-                WHERE uif.visible = 2 AND uif.shortname $insql
-                ORDER BY uic.sortorder ASC, uif.sortorder", $inparams);
+            $selectedprofilefields = array_filter($selectedprofilefields, function($item) {
+                return !in_array($item, $this->exclude);
+            });
+            if ($selectedprofilefields) {
+                list($insql, $inparams) = $DB->get_in_or_equal($selectedprofilefields);
+                // Only public fields can be displayed.
+                $profilefields = $DB->get_records_sql("SELECT uif.*
+                    FROM {user_info_field} uif
+                    JOIN {user_info_category} uic ON uic.id = uif.categoryid
+                    WHERE uif.visible = 2 AND uif.shortname $insql
+                    ORDER BY uic.sortorder ASC, uif.sortorder", $inparams);
+            }
         }
 
         $selectediconsrows = explode("\n", $config->persona_profilefieldiconmap);
@@ -110,6 +124,9 @@ class persona implements renderable, templatable {
             $selectedicons[$key] = $icon;
         }
         $selecteduserfields = explode(',', $config->persona_userfields);
+        $selecteduserfields = array_filter($selecteduserfields, function($item) {
+            return !in_array($item, $this->exclude);
+        });
         foreach ($users as $user) {
             $persona = new stdClass();
             $persona->name = fullname($user);

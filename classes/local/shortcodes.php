@@ -199,7 +199,8 @@ class shortcodes {
         }
         $title = $args['title'] ?? '';
         $users = \local_placeholders\get_users_in_course_by_role($args['role']);
-        $mcs = new \local_placeholders\output\persona($users, $title);
+        $exclude = isset($args['exclude']) ? explode(',', $args['exclude']) : [];
+        $mcs = new \local_placeholders\output\persona($users, $title, $exclude);
         return $OUTPUT->render($mcs);
     }
 

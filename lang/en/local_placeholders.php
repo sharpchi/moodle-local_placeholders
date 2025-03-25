@@ -79,8 +79,9 @@ $string['room'] = 'Room';
 $string['roomdescription'] = 'Find {$a} on the map';
 
 $string['shortcode:contactcard'] = 'Prints a contact card for the given role.';
-$string['shortcode:contactcard_help'] = 'Use the following format: [contactcard role="editingteacher"].
-Note: role shortnames are used. If you are using an invalid name, nothing will be output.';
+$string['shortcode:contactcard_help'] = 'Use the following format: [contactcard role="editingteacher" exclude="teamchat,teamcall"].</br>
+Note: role shortnames are used. If you are using an invalid name, nothing will be output.<br/>
+If the teacher really doesn\'t want some fields to appear, use the exclude property. Email will always be shown.';
 $string['shortcode:coordinators'] = 'Prints a contact card of all the Module coordinators enrolled on this module.';
 $string['shortcode:coordinators_help'] = 'Module coordinators are automatically enrolled via SITS.
 Please contact Modular if these details are not correct.';

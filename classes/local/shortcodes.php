@@ -39,7 +39,6 @@ use stdClass;
  * Class called by the filter_shortcodes plugin.
  */
 class shortcodes {
-
     /**
      * Returns course idnumber if set.
      *

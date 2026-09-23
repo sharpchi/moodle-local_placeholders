@@ -33,7 +33,6 @@ use pix_icon;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class snippets extends system_report {
-
     /**
      * Initialise report, we need to set the main table, load our entities and set columns/filters
      */

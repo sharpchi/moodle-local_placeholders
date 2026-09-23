@@ -32,7 +32,6 @@ use stdClass;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class snippet extends base {
-
     /**
      * default tables
      *
@@ -98,7 +97,7 @@ class snippet extends base {
             ->add_joins($this->get_joins())
             ->add_field("{$phalias}.id")
             ->add_field("{$phalias}.slug")
-            ->add_callback(static function($id, $row): string {
+            ->add_callback(static function ($id, $row): string {
                 return "[snippet id=\"{$id}\" slug=\"{$row->slug}\"]";
             });
 
@@ -131,7 +130,7 @@ class snippet extends base {
             ->set_type(column::TYPE_TEXT)
             ->add_field("{$phalias}.content")
             ->add_fields("{$phalias}.contentformat, {$phalias}.id")
-            ->add_callback(static function(?string $content, stdClass $snippet): string {
+            ->add_callback(static function (?string $content, stdClass $snippet): string {
                 global $CFG;
                 require_once("{$CFG->libdir}/filelib.php");
                 if ($content == null) {

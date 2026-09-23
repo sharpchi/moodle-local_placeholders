@@ -89,8 +89,10 @@ function set_userinfofield($shortname) {
         $cat->sortorder = $sortorder;
         $cat->id = $DB->insert_record('user_info_category', $cat);
     }
-    $sortorder = $DB->get_field_sql("SELECT MAX(sortorder) FROM {user_info_field} WHERE categoryid = :categoryid",
-        ['categoryid' => $cat->id]);
+    $sortorder = $DB->get_field_sql(
+        "SELECT MAX(sortorder) FROM {user_info_field} WHERE categoryid = :categoryid",
+        ['categoryid' => $cat->id]
+    );
     if (is_numeric($sortorder)) {
         $sortorder++;
     } else {
@@ -181,7 +183,7 @@ function get_course_roles_menu() {
  */
 function get_rolenames_for_ids($roleids) {
     global $DB;
-    list($insql, $inparams) = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED);
+    [$insql, $inparams] = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED);
     $sql = "SELECT r.shortname
         FROM {role} r
         WHERE r.id $insql";

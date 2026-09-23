@@ -28,7 +28,6 @@ use local_placeholders\reportbuilder\local\entities\snippet;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class snippets extends datasource {
-
     /**
      * Initialise the datasource
      *

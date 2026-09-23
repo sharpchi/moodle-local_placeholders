@@ -35,7 +35,6 @@ use templatable;
  * Timetable renderer class.
  */
 class timetable implements renderable, templatable {
-
     /**
      * The data for the timetable.
      *

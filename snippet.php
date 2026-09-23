@@ -60,7 +60,9 @@ $customdata = [
 if ($confirmdelete && confirm_sesskey()) {
     $slug = $snippet->get('slug');
     $snippet->delete();
-    redirect(new moodle_url('/local/placeholders/snippets.php'), get_string('snippetdeleted', 'local_placeholders', $slug),
+    redirect(
+        new moodle_url('/local/placeholders/snippets.php'),
+        get_string('snippetdeleted', 'local_placeholders', $slug),
         null,
         \core\output\notification::NOTIFY_INFO
     );
@@ -104,7 +106,8 @@ if ($form->is_cancelled()) {
         );
         $snippet->set('content', $data->content);
         $snippet->update();
-        redirect(new moodle_url('/local/placeholders/snippets.php'),
+        redirect(
+            new moodle_url('/local/placeholders/snippets.php'),
             get_string('snippetcreated', 'local_placeholders', $formdata->slug),
             null,
             \core\output\notification::NOTIFY_INFO
@@ -133,7 +136,8 @@ if ($form->is_cancelled()) {
             );
             $snippet->set('content', $data->content);
             $snippet->update();
-            redirect(new moodle_url('/local/placeholders/snippets.php'),
+            redirect(
+                new moodle_url('/local/placeholders/snippets.php'),
                 get_string('snippetupdated', 'local_placeholders', $formdata->slug),
                 null,
                 \core\output\notification::NOTIFY_INFO
@@ -154,7 +158,9 @@ if ($action == 'delete') {
         'sesskey' => sesskey(),
     ]);
     $deletebutton = new single_button($deleteurl, get_string('delete'), 'post');
-    echo $OUTPUT->confirm(get_string('confirmdeletesnippet', 'local_placeholders', $snippet->get('slug')), $deletebutton,
+    echo $OUTPUT->confirm(
+        get_string('confirmdeletesnippet', 'local_placeholders', $snippet->get('slug')),
+        $deletebutton,
         new moodle_url('/local/placeholders/snippets.php')
     );
 } else {

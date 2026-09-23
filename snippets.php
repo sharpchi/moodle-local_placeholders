@@ -41,7 +41,8 @@ $PAGE->set_heading($SITE->fullname);
 echo $OUTPUT->header();
 
 
-$new = new action_link(new moodle_url('/local/placeholders/snippet.php', ['action' => 'new']),
+$new = new action_link(
+    new moodle_url('/local/placeholders/snippet.php', ['action' => 'new']),
     get_string('addnewsnippet', 'local_placeholders'),
     null,
     ['class' => 'btn btn-primary'],

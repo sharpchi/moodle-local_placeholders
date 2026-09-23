@@ -25,8 +25,6 @@
 
 namespace local_placeholders\output;
 
-use html_writer;
-use moodle_url;
 use core\output\renderer_base;
 use renderable;
 use stdClass;
@@ -36,7 +34,6 @@ use templatable;
  * Personal contact details card
  */
 class persona implements renderable, templatable {
-
     /**
      * List of userids to print contact details of
      *
@@ -91,17 +88,17 @@ class persona implements renderable, templatable {
         if (!empty($this->title)) {
             $personas->title = $this->title;
         }
-        list($insql, $inparams) = $DB->get_in_or_equal($this->people);
+        [$insql, $inparams] = $DB->get_in_or_equal($this->people);
         $users = $DB->get_records_sql("SELECT * FROM {user} WHERE id $insql", $inparams);
         // Get selected info fields. Detect if they are urls, if they are make into a link and pass that in.
         $profilefields = [];
         if (isset($config->persona_profilefields)) {
             $selectedprofilefields = explode(',', $config->persona_profilefields);
-            $selectedprofilefields = array_filter($selectedprofilefields, function($item) {
+            $selectedprofilefields = array_filter($selectedprofilefields, function ($item) {
                 return !in_array($item, $this->exclude);
             });
             if ($selectedprofilefields) {
-                list($insql, $inparams) = $DB->get_in_or_equal($selectedprofilefields);
+                [$insql, $inparams] = $DB->get_in_or_equal($selectedprofilefields);
                 // Only public fields can be displayed.
                 $profilefields = $DB->get_records_sql("SELECT uif.*
                     FROM {user_info_field} uif
@@ -120,11 +117,11 @@ class persona implements renderable, templatable {
             if (strpos($row, '=') === false) {
                 continue;
             }
-            list($key, $icon) = explode('=', $row);
+            [$key, $icon] = explode('=', $row);
             $selectedicons[$key] = $icon;
         }
         $selecteduserfields = explode(',', $config->persona_userfields);
-        $selecteduserfields = array_filter($selecteduserfields, function($item) {
+        $selecteduserfields = array_filter($selecteduserfields, function ($item) {
             return !in_array($item, $this->exclude);
         });
         foreach ($users as $user) {
